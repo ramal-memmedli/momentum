@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A3892824-24E6-41FE-9CF3-2B123226754E}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		LICENSE = LICENSE
 		src\README-projects.md = src\README-projects.md
 		tests\README-tests.md = tests\README-tests.md
 		README.md = README.md
