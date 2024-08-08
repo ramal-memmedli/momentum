@@ -8,16 +8,24 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
 {
     public void Configure(EntityTypeBuilder<Post> builder)
     {
+        builder.HasKey(post => post.Id);
+
+        builder.Property(post => post.Id)
+               .ValueGeneratedOnAdd();
+
         builder.Property(post => post.Title)
-               .UseIdentityColumn()
-               .HasMaxLength(128);
+               .HasMaxLength(128)
+               .IsRequired();
 
         builder.Property(post => post.Content)
-               .IsRequired()
-               .HasMaxLength(20000);
+               .HasMaxLength(20000)
+               .IsRequired();
 
         builder.Property(post => post.IsPublished)
                .HasDefaultValue(false);
+
+        builder.Property(post => post.CreatedAt)
+               .HasDefaultValueSql("GETUTCDATE()");
 
         builder.HasOne(post => post.AppUser)
                .WithMany(user => user.Posts)

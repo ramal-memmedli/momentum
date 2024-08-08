@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Momentum.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +19,7 @@ app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "dashboard",
-    pattern: "{controller=Dashboard}/{action=Index}/{id?}"
+    pattern: "admin/{controller=Dashboard}/{action=Index}/{id?}"
 );
 
 app.Run();

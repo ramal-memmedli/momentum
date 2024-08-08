@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Momentum.Web.Controllers
+namespace Momentum.Administration.Controllers
 {
     public class DashboardController : Controller
     {
-        public IActionResult Index()
+        public ActionResult Index()
         {
             return View();
         }

@@ -2,12 +2,12 @@
 
 namespace Momentum.Domain.Entities;
 
-public class Post : IEntity
+public class Post : IEntity, IIdentifiable, IAuditable
 {
     public int Id { get; set; }
     public string? Title { get; set; }
     public string? Content { get; set; }
-    public int AppUserId { get; set; }
+    public string AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
     public int CategoryId { get; set; }
     public Category? Category { get; set; }

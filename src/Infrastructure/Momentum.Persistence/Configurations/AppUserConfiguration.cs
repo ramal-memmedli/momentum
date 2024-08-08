@@ -16,8 +16,7 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
                .HasMaxLength(48)
                .IsRequired();
 
-        builder.HasMany(user => user.Posts)
-               .WithOne(post => post.AppUser)
-               .HasForeignKey(post => post.AppUserId);
+        builder.Property(user => user.CreatedAt)
+               .HasDefaultValueSql("GETUTCDATE()");
     }
 }
