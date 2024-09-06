@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Momentum.Domain\Momentum.Domain.csproj" />
+    <ProjectReference Include="..\..\Core\Momentum.Application\Momentum.Application.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Core\Momentum.Domain\Momentum.Domain.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\Momentum.Persistence\Momentum.Persistence.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

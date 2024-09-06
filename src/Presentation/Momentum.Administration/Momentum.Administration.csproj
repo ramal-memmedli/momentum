@@ -15,11 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\Momentum.Persistence\Momentum.Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Controllers\" />
+    <ProjectReference Include="..\..\Infrastructure\Momentum.BusinessLogic\Momentum.BusinessLogic.csproj" />
   </ItemGroup>
 
 </Project>
