@@ -1,59 +1,98 @@
 ﻿@model RegisterVM
 
-<div class="register-main">
-    <div class="register-box">
-        <h2>Forum register</h2>
-        <p>Enter your details for register on forum.</p>
+@{
+    Layout = "_AuthenticationLayout";
+}
 
-        <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-
-        <form method="post">
-            <label asp-for="Name">
-                <input asp-for="Name" placeholder="First name">
-                <span>First name</span>
-            </label>
-                <span asp-validation-for="Name" class="text-danger mb-2"></span>
-
-            <label asp-for="Surname">
-                <input asp-for="Surname" placeholder="Last name">
-                <span>Last name</span>
-            </label>
-                <span asp-validation-for="Surname" class="text-danger mb-2"></span>
-
-            <label asp-for="Username">
-                <input asp-for="Username" placeholder="Username">
-                <span>Username</span>
-            </label>
-                <span asp-validation-for="Username" class="text-danger mb-2"></span>
-
-            <label asp-for="Email">
-                <input asp-for="Email" placeholder="E-mail">
-                <span>E-mail</span>
-            </label>
-                <span asp-validation-for="Email" class="text-danger mb-2"></span>
-
-            <label asp-for="ConfirmEmail">
-                <input asp-for="ConfirmEmail" placeholder="Confirm e-mail">
-                <span>Confirm e-maill</span>
-            </label>
-                <span asp-validation-for="ConfirmEmail" class="text-danger mb-2"></span>
-
-            <label asp-for="Password">
-                <input asp-for="Password" placeholder="Password">
-                <span>Password</span>
-            </label>
-                <span asp-validation-for="Password" class="text-danger mb-2"></span>
-
-            <label asp-for="ConfirmPassword">
-                <input asp-for="ConfirmPassword" placeholder="Confirm password">
-                <span>Confirm password</span>
-            </label>
-                <span asp-validation-for="ConfirmPassword" class="text-danger mb-2"></span>
-
-
-            <button type="submit">Register</button>
-
-            <p class="register-text">Already have an account? <a asp-controller="account" asp-action="login" class="register-btn">Login</a></p>
-        </form>
+<!-- Start wrapper-->
+<div id="wrapper">
+    <div class="card card-authentication1 mx-auto my-4">
+        <div class="card-body">
+            <div class="card-content p-2">
+                <div class="text-center">
+                    <img src="assets/images/logo-icon.png" alt="logo icon">
+                </div>
+                <div class="card-title text-uppercase text-center py-3">Sign Up</div>
+                <form method="post">
+                    <div class="form-group">
+                        <label asp-for="Name" class="sr-only">First Name</label>
+                        <div class="position-relative has-icon-right">
+                            <input asp-for="Name" class="form-control input-shadow" placeholder="Enter Your First Name">
+                            <div class="form-control-position">
+                                <i class="icon-user"></i>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Name" class="text-danger mb-2"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Surname" class="sr-only">Surname</label>
+                        <div class="position-relative has-icon-right">
+                            <input asp-for="Surname" class="form-control input-shadow" placeholder="Enter Your Surname">
+                            <div class="form-control-position">
+                                <i class="icon-user"></i>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Surname" class="text-danger mb-2"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Username" class="sr-only">Username</label>
+                        <div class="position-relative has-icon-right">
+                            <input asp-for="Username" class="form-control input-shadow" placeholder="Enter Your Username">
+                            <div class="form-control-position">
+                                <i class="icon-user"></i>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Username" class="text-danger mb-2"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="sr-only">Email</label>
+                        <div class="position-relative has-icon-right">
+                            <input asp-for="Email" class="form-control input-shadow" placeholder="Enter Your Email">
+                            <div class="form-control-position">
+                                <i class="icon-envelope-open"></i>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger mb-2"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConfirmEmail" class="sr-only">Confirm Email</label>
+                        <div class="position-relative has-icon-right">
+                            <input asp-for="ConfirmEmail" class="form-control input-shadow" placeholder="Enter Your Email Again">
+                            <div class="form-control-position">
+                                <i class="icon-envelope-open"></i>
+                            </div>
+                        </div>
+                        <span asp-validation-for="ConfirmEmail" class="text-danger mb-2"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="sr-only">Password</label>
+                        <div class="position-relative has-icon-right">
+                            <input asp-for="Password" class="form-control input-shadow" placeholder="Choose Password">
+                            <div class="form-control-position">
+                                <i class="icon-lock"></i>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger mb-2"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword" class="sr-only">Confirm Password</label>
+                        <div class="position-relative has-icon-right">
+                            <input asp-for="ConfirmPassword" class="form-control input-shadow" placeholder="Confirm Password">
+                            <div class="form-control-position">
+                                <i class="icon-lock"></i>
+                            </div>
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger mb-2"></span>
+                    </div>
+                    <button type="submit" class="btn btn-light btn-block waves-effect waves-light">Sign Up</button>
+                    <div class="form-row mt-4">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card-footer text-center py-3">
+            <p class="text-warning mb-0">Already have an account? <a asp-controller="Account" asp-action="Login"> Sign In here</a></p>
+        </div>
     </div>
-</div>
+</div><!--wrapper-->
