@@ -14,8 +14,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\Momentum.BusinessLogic\Momentum.BusinessLogic.csproj" />
-  </ItemGroup>
-
 </Project>

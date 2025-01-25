@@ -14,5 +14,10 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
                .HasMaxLength(48)
                .HasDefaultValue("Unnamed category")
                .IsRequired();
+
+        builder.Property(category => category.CreatedAt)
+               .HasDefaultValueSql("GETUTCDATE()")
+               .ValueGeneratedOnAdd()
+               .IsRequired();
     }
 }
