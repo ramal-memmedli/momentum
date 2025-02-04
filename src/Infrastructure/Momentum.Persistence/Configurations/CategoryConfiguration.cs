@@ -19,5 +19,15 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
                .HasDefaultValueSql("GETUTCDATE()")
                .ValueGeneratedOnAdd()
                .IsRequired();
+
+        builder.Property(category => category.LastUpdatedAt)
+               .HasDefaultValueSql("GETUTCDATE()")
+               .ValueGeneratedOnAddOrUpdate()
+               .IsRequired();
+
+        builder.HasOne(category => category.Blog)
+               .WithMany(blog => blog.Categories)
+               .HasForeignKey(category => category.BlogId)
+               .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

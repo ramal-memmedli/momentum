@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Momentum.Application.ViewModels.Account;
 using Momentum.Domain.Entities;
 
-namespace Momentum.Administration.Controllers
+namespace Momentum.Web.Areas.Admin.Controllers
 {
     public class AccountController : Controller
     {
@@ -49,7 +49,7 @@ namespace Momentum.Administration.Controllers
                 }
             }
 
-            return RedirectToAction(controllerName: nameof(AccountController), actionName: "Login");
+            return RedirectToAction(controllerName: "Account", actionName: "Login");
         }
 
         [HttpGet]
@@ -57,7 +57,7 @@ namespace Momentum.Administration.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                RedirectToAction(controllerName: nameof(DashboardController), actionName: "Index");
+                RedirectToAction(controllerName: "Dashboard", actionName: "Index");
             }
 
             return View();
@@ -93,7 +93,7 @@ namespace Momentum.Administration.Controllers
                 return View();
             }
 
-            return RedirectToAction(controllerName: nameof(DashboardController), actionName: "Index");
+            return RedirectToAction(controllerName: "Dashboard", actionName: "Index");
         }
     }
 }

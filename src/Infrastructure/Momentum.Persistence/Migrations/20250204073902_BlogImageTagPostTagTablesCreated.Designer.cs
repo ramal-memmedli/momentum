@@ -12,15 +12,15 @@ using Momentum.Persistence.ApplicationDbContext;
 namespace Momentum.Persistence.Migrations
 {
     [DbContext(typeof(MomentumDbContext))]
-    [Migration("20240808095907_AppUser, Posts and Categories created")]
-    partial class AppUserPostsandCategoriescreated
+    [Migration("20250204073902_BlogImageTagPostTagTablesCreated")]
+    partial class BlogImageTagPostTagTablesCreated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -166,13 +166,16 @@ namespace Momentum.Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("BannerImageId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetimeoffset")
                         .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Email")
@@ -182,6 +185,11 @@ namespace Momentum.Persistence.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<DateTimeOffset>("LastUpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -190,8 +198,8 @@ namespace Momentum.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(48)
-                        .HasColumnType("nvarchar(48)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -210,25 +218,32 @@ namespace Momentum.Persistence.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("ProfileImageId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasMaxLength(48)
-                        .HasColumnType("nvarchar(48)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BannerImageId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -238,16 +253,75 @@ namespace Momentum.Persistence.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("ProfileImageId");
+
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Momentum.Domain.Entities.Blog", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("BannerImageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<DateTimeOffset>("LastUpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<Guid>("ProfileImageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("BannerImageId");
+
+                    b.HasIndex("ProfileImageId");
+
+                    b.ToTable("Blogs");
                 });
 
             modelBuilder.Entity("Momentum.Domain.Entities.Category", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("BlogId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<DateTimeOffset>("LastUpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -258,32 +332,68 @@ namespace Momentum.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BlogId");
+
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Momentum.Domain.Entities.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AltText")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTimeOffset>("LastUpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(248)
+                        .HasColumnType("nvarchar(248)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("Momentum.Domain.Entities.Post", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
+                    b.Property<string>("AuthorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("BlogId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(20000)
+                        .HasMaxLength(32768)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetimeoffset")
                         .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<bool>("IsPublished")
@@ -291,24 +401,88 @@ namespace Momentum.Persistence.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<DateTime?>("PublishedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("LastUpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<DateTimeOffset>("PublishedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("BlogId");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("Momentum.Domain.Entities.PostTags", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("PostTags");
+                });
+
+            modelBuilder.Entity("Momentum.Domain.Entities.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BlogId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<DateTimeOffset>("LastUpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -362,33 +536,138 @@ namespace Momentum.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Momentum.Domain.Entities.AppUser", b =>
+                {
+                    b.HasOne("Momentum.Domain.Entities.Image", "BannerImage")
+                        .WithMany()
+                        .HasForeignKey("BannerImageId")
+                        .OnDelete(DeleteBehavior.ClientNoAction)
+                        .IsRequired();
+
+                    b.HasOne("Momentum.Domain.Entities.Image", "ProfileImage")
+                        .WithMany()
+                        .HasForeignKey("ProfileImageId")
+                        .IsRequired();
+
+                    b.Navigation("BannerImage");
+
+                    b.Navigation("ProfileImage");
+                });
+
+            modelBuilder.Entity("Momentum.Domain.Entities.Blog", b =>
+                {
+                    b.HasOne("Momentum.Domain.Entities.AppUser", "Author")
+                        .WithMany("Blogs")
+                        .HasForeignKey("AuthorId")
+                        .IsRequired();
+
+                    b.HasOne("Momentum.Domain.Entities.Image", "BannerImage")
+                        .WithMany()
+                        .HasForeignKey("BannerImageId")
+                        .IsRequired();
+
+                    b.HasOne("Momentum.Domain.Entities.Image", "ProfileImage")
+                        .WithMany()
+                        .HasForeignKey("ProfileImageId")
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("BannerImage");
+
+                    b.Navigation("ProfileImage");
+                });
+
+            modelBuilder.Entity("Momentum.Domain.Entities.Category", b =>
+                {
+                    b.HasOne("Momentum.Domain.Entities.Blog", "Blog")
+                        .WithMany("Categories")
+                        .HasForeignKey("BlogId")
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+                });
+
             modelBuilder.Entity("Momentum.Domain.Entities.Post", b =>
                 {
-                    b.HasOne("Momentum.Domain.Entities.AppUser", "AppUser")
+                    b.HasOne("Momentum.Domain.Entities.AppUser", "Author")
                         .WithMany("Posts")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("AuthorId")
+                        .IsRequired();
+
+                    b.HasOne("Momentum.Domain.Entities.Blog", "Blog")
+                        .WithMany("Posts")
+                        .HasForeignKey("BlogId")
                         .IsRequired();
 
                     b.HasOne("Momentum.Domain.Entities.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
+                    b.Navigation("Author");
+
+                    b.Navigation("Blog");
 
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Momentum.Domain.Entities.PostTags", b =>
+                {
+                    b.HasOne("Momentum.Domain.Entities.Post", "Post")
+                        .WithMany("PostTags")
+                        .HasForeignKey("PostId")
+                        .IsRequired();
+
+                    b.HasOne("Momentum.Domain.Entities.Tag", "Tag")
+                        .WithMany("PostTags")
+                        .HasForeignKey("TagId")
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("Momentum.Domain.Entities.Tag", b =>
+                {
+                    b.HasOne("Momentum.Domain.Entities.Blog", "Blog")
+                        .WithMany("Tags")
+                        .HasForeignKey("BlogId")
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+                });
+
             modelBuilder.Entity("Momentum.Domain.Entities.AppUser", b =>
                 {
+                    b.Navigation("Blogs");
+
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("Momentum.Domain.Entities.Blog", b =>
+                {
+                    b.Navigation("Categories");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("Momentum.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("Momentum.Domain.Entities.Post", b =>
+                {
+                    b.Navigation("PostTags");
+                });
+
+            modelBuilder.Entity("Momentum.Domain.Entities.Tag", b =>
+                {
+                    b.Navigation("PostTags");
                 });
 #pragma warning restore 612, 618
         }

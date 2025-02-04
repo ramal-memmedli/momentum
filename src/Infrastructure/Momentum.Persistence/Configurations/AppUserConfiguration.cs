@@ -16,6 +16,10 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
                .HasMaxLength(64)
                .IsRequired();
 
+        builder.Property(user => user.Title)
+               .HasMaxLength(128)
+               .IsRequired();
+
         builder.Property(user => user.CreatedAt)
                .ValueGeneratedOnAdd()
                .HasDefaultValueSql("GETUTCDATE()");
@@ -23,5 +27,15 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
         builder.Property(user => user.LastUpdatedAt)
                .ValueGeneratedOnAddOrUpdate()
                .HasDefaultValueSql("GETUTCDATE()");
+
+        builder.HasOne(user => user.ProfileImage)
+               .WithMany()
+               .HasForeignKey(user => user.ProfileImageId)
+               .OnDelete(DeleteBehavior.ClientSetNull);
+
+        builder.HasOne(user => user.BannerImage)
+               .WithMany()
+               .HasForeignKey(user => user.BannerImageId)
+               .OnDelete(DeleteBehavior.ClientNoAction);
     }
 }

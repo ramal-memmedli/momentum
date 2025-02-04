@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Momentum.Administration.Controllers
+namespace Momentum.Web.Areas.Admin.Controllers
 {
     public class DashboardController : Controller
     {

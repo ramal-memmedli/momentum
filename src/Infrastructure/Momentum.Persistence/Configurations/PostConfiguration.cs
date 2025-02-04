@@ -14,11 +14,15 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
                .ValueGeneratedOnAdd();
 
         builder.Property(post => post.Title)
-               .HasMaxLength(512)
+               .HasMaxLength(256)
                .IsRequired();
 
         builder.Property(post => post.Content)
-               .HasMaxLength(32767)
+               .HasMaxLength(32768)
+               .IsRequired();
+
+        builder.Property(post => post.Slug)
+               .HasMaxLength(512)
                .IsRequired();
 
         builder.Property(post => post.IsPublished)
@@ -32,14 +36,19 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
                .ValueGeneratedOnAddOrUpdate()
                .HasDefaultValueSql("GETUTCDATE()");
 
-        builder.HasOne(post => post.AppUser)
+        builder.HasOne(post => post.Blog)
+               .WithMany(blog => blog.Posts)
+               .HasForeignKey(post => post.BlogId)
+               .OnDelete(DeleteBehavior.ClientSetNull);
+
+        builder.HasOne(post => post.Author)
                .WithMany(user => user.Posts)
-               .HasForeignKey(post => post.AppUserId)
-               .IsRequired();
+               .HasForeignKey(post => post.AuthorId)
+               .OnDelete(DeleteBehavior.ClientSetNull);
 
         builder.HasOne(post => post.Category)
                .WithMany(category => category.Posts)
                .HasForeignKey(post => post.CategoryId)
-               .OnDelete(DeleteBehavior.SetNull);
+               .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }
